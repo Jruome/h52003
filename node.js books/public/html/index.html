@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+		<style type="text/css">
+			table{
+				table-layout:  fixed;
+			}
+			.over{
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			.btn-right{
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>首页</h1>
+		<button class="btn btn-info">新增</button>
+		<button class="btn btn-info btn-right">注册</button>
+		<button class="btn btn-info btn-right dl">登录</button>
+		<div class="container">
+			
+		</div>
+		<script src="../js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$.get("/table",(data)=>{
+				var table=$("<table class='table table-bordered table-hover table-striped'></table>");
+				var tr=$("<tr></tr>");
+				for(var i in data[1]){
+					if(i=="content"){break};
+					tr.append(`<td>${i}</td>`)
+				}
+				tr.append(`<td>操作</td>`)
+				table.append(tr);
+				
+				for(var r=0;r<data.length;r++){
+					var tr=$("<tr></tr>");
+					for(var c in data[r]){
+						if(c=="content"){break;}
+						else if(c=="jianjie"){tr.append(`<td class='over'>${data[r][c]}</td>`)}
+						else{tr.append(`<td>${data[r][c]}</td>`)}
+					}
+					tr.append(`<td style='width:300px'><button class='btn btn-primary btn-sm' onclick='look(this)'>查看</button><button onclick='update(this)' class='btn btn-warning btn-sm'>修改</button><button class='btn btn-danger btn-sm' onclick='del(this)'>删除</button></td>`)
+					
+					table.append(tr);	
+				}
+				
+				$(".container").append(table);
+			},"JSON")
+			
+			$(".btn-info").click(()=>{
+				location="./html/insert.html"
+			})
+			$(".btn-right").click(()=>{
+				location="./html/zhuce.html"
+			})
+			$(".dl").click(()=>{
+				location="./html/dl.html"
+			})
+
+			
+			function look(btn){
+				var id=($(btn).parent().parent().children()[0].innerHTML)
+				sessionStorage.id=id;
+				location='./html/look.html'
+			}
+	
+		
+			function update(btn){
+				var id=($(btn).parent().parent().children()[0].innerHTML)
+				sessionStorage.id=id;
+				location='./html/update.html'
+			}
+
+			function del(btn){
+				var id=($(btn).parent().parent().children()[0].innerHTML)
+				location='./html/index.html'
+				$.get("/del",`id=${id}`,(data)=>{
+
+			},"JSON")
+			}
+		</script>
+	</body>
+</html>

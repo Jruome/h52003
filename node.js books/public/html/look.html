@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>查看</h1>
+		<div>
+
+		</div>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript">
+			var id=sessionStorage.id;
+			var arr=[];
+			$.get("/id",`id=${id}`,(data)=>{
+				for(var i=0;i<data.length;i++){
+					console.log($(data).eq(i))
+					$("div").append($(`<h2>${data[i].name}</h2>`))
+					$("div").append($(`<span>${data[i].author}</span>`))
+					$("div").append($(`<p>${data[i].introduce}</p>`))
+					$("div").append($(`<p>${data[i].content}</p>`))
+				}
+				$("body").append($("div"))
+			},"JSON")
+	
+		</script>
+	</body>
+</html>
